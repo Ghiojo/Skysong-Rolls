@@ -3,6 +3,7 @@ package com.skysongdev.skysongrolls.command;
 import com.skysongdev.skysongrolls.Main;
 import com.skysongdev.skysongrolls.RollParser;
 import net.md_5.bungee.api.ChatColor;
+import openrp.chat.listeners.ToggleSwitchListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -127,6 +128,11 @@ public class PrivateRoll implements CommandExecutor {
 
         Main.getOpenRP().getChat().sendMessage((Player)commandSender, returnString, "private-rolling");
         Bukkit.getLogger().info(commandSender.getName() + " " + ChatColor.stripColor(returnString));
+        if(ToggleSwitchListener.getToggleList((Player)commandSender).contains("private-rolling")){
+            returnString = returnString.substring(3);
+            returnString = "You".concat(returnString);
+            commandSender.sendMessage(ChatColor.of("DARK_AQUA").toString() + returnString);
+        }
         return true;
     }
 }
