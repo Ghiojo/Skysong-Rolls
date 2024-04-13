@@ -1,0 +1,23 @@
+name: "Skysong_Rolling"
+main: com.skysongdev.skysongrolls.Main
+version: ${version}
+authors: [Ghiojo]
+api-version: "1.20"
+depend:
+  - OpenRP
+commands:
+  skyroll:
+    description: Description
+    usage: /skyroll
+    permission: skysongrolls.roll
+    permission-message: "You do not have permission to use this command!"
+  flip:
+    description: Description
+    usage: /flip
+    permission: skysongrolls.roll
+    permission-message: "You do not have permission to use this command!"
+  proll:
+    description: Description
+    usage: /proll
+    permission: skysongrolls.roll
+    permission-message: "You do not have permission to use this command!"
