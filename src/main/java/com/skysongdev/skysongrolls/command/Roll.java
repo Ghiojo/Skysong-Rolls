@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Roll implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        Player player = (Player) commandSender;
         //Step 1: Check if the command has enough arguments (1)
         if(strings.length > 1){
             commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Too many arguments! You don't need to put spaces");
@@ -50,7 +51,7 @@ public class Roll implements CommandExecutor {
         //Step 4: We make sure that all of the numbers and dice are valid. This also incldes
         //making sure the dice are not 0. Such as 0d2 or 2d0
         for(int i = 0; i < numArgs.size(); i++){
-            if(RollParser.checkValidNumerical(numArgs.get(i))){
+            if(RollParser.checkValidNumerical(numArgs.get(i).toLowerCase())){
                 commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Argument " + i + " (" + numArgs.get(i) + ") is invalid! (Correct form: <number>d<number>)");
                 return true;
             }
@@ -77,6 +78,22 @@ public class Roll implements CommandExecutor {
         //for whatever ungodly reason, it shouldn't break or send an error code.
         if(numArgs.get(0).matches("^[0-9]+d[0-9]+$")){
             aux = RollParser.diceResult(numArgs.get(0));
+        } else if(numArgs.get(0).toLowerCase().matches("(dex)|(str)|(con)|(foc)")){
+            switch(numArgs.get(0).toLowerCase()){
+                case "dex":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".dexterity", "0")));
+                    break;
+                case "str":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".strength", "0")));
+                    break;
+                case "con":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".constitution", "0")));
+                    break;
+                case "foc":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".focus", "0")));
+                    break;
+                default:
+            }
         }
         else{
             aux.add(Integer.parseInt(numArgs.get(0)));
@@ -95,6 +112,26 @@ public class Roll implements CommandExecutor {
         for (int i = 1; i < numArgs.size(); i++){
             if(numArgs.get(i).matches("^[0-9]+d[0-9]+$")){
                 aux = RollParser.diceResult(numArgs.get(i));
+            } else if(numArgs.get(i).toLowerCase().matches("(dex)|(str)|(con)|(foc)")){
+                switch(numArgs.get(i).toLowerCase()){
+                    case "dex":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".dexterity", "0")));
+                        break;
+                    case "str":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".strength", "0")));
+                        break;
+                    case "con":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".constitution", "0")));
+                        break;
+                    case "foc":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".focus", "0")));
+                        break;
+                    default:
+                }
             }
             else{
                 aux.clear();
@@ -116,7 +153,7 @@ public class Roll implements CommandExecutor {
             else if(aux.size() > 1)
                 aux.remove(0);
 
-            returnString = returnString.concat(" "+ ChatColor.of("WHITE").toString() + numArgs.get(i) + ChatColor.of("GOLD").toString() + aux + ChatColor.of("DARK_AQUA").toString() + " ");
+            returnString = returnString.concat(" "+ ChatColor.of("WHITE").toString() + numArgs.get(i).toUpperCase() + ChatColor.of("GOLD").toString() + aux + ChatColor.of("DARK_AQUA").toString() + " ");
         }
 
         //After constructing all the operations on the return string, we add the result of it all

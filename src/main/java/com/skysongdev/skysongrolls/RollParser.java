@@ -43,7 +43,7 @@ public class RollParser {
     }
 
     public static boolean checkValidNumerical(String input){
-        return !input.matches("^[0-9]+d[0-9]+$") && !input.matches("^[0-9]+$");
+        return !input.matches("^[0-9]+d[0-9]+$") && !input.matches("^[0-9]+$") && !input.matches("(dex)|(str)|(con)|(foc)");
     }
 
     public static boolean checkValidOperator(String input){

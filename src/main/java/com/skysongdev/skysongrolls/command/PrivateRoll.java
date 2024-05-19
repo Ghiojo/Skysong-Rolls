@@ -16,6 +16,7 @@ import java.util.Objects;
 public class PrivateRoll implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        Player player = (Player) commandSender;
         //Step 1: Check if the command has enough arguments (1)
         if(strings.length > 1){
             commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Too many arguments! You don't need to put spaces");
@@ -77,6 +78,22 @@ public class PrivateRoll implements CommandExecutor {
         //for whatever ungodly reason, it shouldn't break or send an error code.
         if(numArgs.get(0).matches("^[0-9]+d[0-9]+$")){
             aux = RollParser.diceResult(numArgs.get(0));
+        } else if(numArgs.get(0).toLowerCase().matches("(dex)|(str)|(con)|(foc)")){
+            switch(numArgs.get(0).toLowerCase()){
+                case "dex":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".dexterity", "0")));
+                    break;
+                case "str":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".strength", "0")));
+                    break;
+                case "con":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".constitution", "0")));
+                    break;
+                case "foc":
+                    aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".focus", "0")));
+                    break;
+                default:
+            }
         }
         else{
             aux.add(Integer.parseInt(numArgs.get(0)));
@@ -95,6 +112,26 @@ public class PrivateRoll implements CommandExecutor {
         for (int i = 1; i < numArgs.size(); i++){
             if(numArgs.get(i).matches("^[0-9]+d[0-9]+$")){
                 aux = RollParser.diceResult(numArgs.get(i));
+            } else if(numArgs.get(i).toLowerCase().matches("(dex)|(str)|(con)|(foc)")){
+                switch(numArgs.get(i).toLowerCase()){
+                    case "dex":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".dexterity", "0")));
+                        break;
+                    case "str":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".strength", "0")));
+                        break;
+                    case "con":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".constitution", "0")));
+                        break;
+                    case "foc":
+                        aux.clear();
+                        aux.add(Integer.parseInt(Main.getOpenRP().getDesc().getUserdata().getString(player.getUniqueId().toString() + ".focus", "0")));
+                        break;
+                    default:
+                }
             }
             else{
                 //If the number itself is a static and not a dice, then just add the number as the aux result
@@ -118,7 +155,7 @@ public class PrivateRoll implements CommandExecutor {
                 aux.clear();
                 aux.add(intaux);
             }
-            returnString = returnString.concat(" "+ ChatColor.of("WHITE").toString() + numArgs.get(i) + ChatColor.of("GOLD").toString() + aux + ChatColor.of("DARK_AQUA").toString() + " ");
+            returnString = returnString.concat(" "+ ChatColor.of("WHITE").toString() + numArgs.get(i).toUpperCase() + ChatColor.of("GOLD").toString() + aux + ChatColor.of("DARK_AQUA").toString() + " ");
         }
 
         //After constructing all the operations on the return string, we add the result of it all
