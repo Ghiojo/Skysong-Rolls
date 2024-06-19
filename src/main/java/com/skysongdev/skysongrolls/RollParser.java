@@ -18,7 +18,7 @@ public class RollParser {
         if(input.matches("^[0-9]+d[0-9]+$")){
             String[] aux = input.split("d");
             int numRolls = Integer.valueOf(aux[0]);
-            int rollSize = Integer.valueOf(aux[1]) - 1;
+            int rollSize = Integer.valueOf(aux[1]);
             int returnValue = 0;
             int rollAux;
 
