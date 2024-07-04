@@ -19,11 +19,11 @@ public class PrivateRoll implements CommandExecutor {
         Player player = (Player) commandSender;
         //Step 1: Check if the command has enough arguments (1)
         if(strings.length > 1){
-            commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Too many arguments! You don't need to put spaces");
+            commandSender.sendMessage(org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.GOLD + "SkysongRolls" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RED + "Too many arguments! You don't need to put spaces");
             return true;
         }
         if(strings.length == 0){
-            commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Too little Arguments! Correct usage: /roll <attributes>");
+            commandSender.sendMessage(org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.GOLD + "SkysongRolls" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RED + "Too little Arguments! Correct usage: /roll <attributes>");
             return true;
         }
 
@@ -52,14 +52,18 @@ public class PrivateRoll implements CommandExecutor {
         //making sure the dice are not 0. Such as 0d2 or 2d0
         for(int i = 0; i < numArgs.size(); i++){
             if(RollParser.checkValidNumerical(numArgs.get(i))){
-                commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Argument " + i + " (" + numArgs.get(i) + ") is invalid! (Correct form: <number>d<number>)");
+                commandSender.sendMessage(org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.GOLD + "SkysongRolls" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RED + "Argument " + i + " (" + numArgs.get(i) + ") is invalid! (Correct form: <number>d<number>)");
                 return true;
             }
             if(numArgs.get(i).matches("^[0-9]+d[0-9]+$"))
                 if(Objects.equals(numArgs.get(i).split("d")[0], "0") || Objects.equals(numArgs.get(i).split("d")[1], "0")){
-                    commandSender.sendMessage(ChatColor.of("RED").toString() + "[ERROR] Argument " + i + " (" + numArgs.get(i) + ") is invalid! (Correct form: <number>d<number>)");
+                    commandSender.sendMessage(org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.GOLD + "SkysongRolls" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RED + "Argument " + i + " (" + numArgs.get(i) + ") is invalid! (Correct form: <number>d<number>)");
                     return true;
                 }
+            if(Integer.parseInt(numArgs.get(i).split("d")[0]) > 100){
+                commandSender.sendMessage(org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.GOLD + "SkysongRolls" + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RED + "Too Many dice! You can roll up to 100 dice.");
+                return true;
+            }
         }
 
         //Step 5: We make sure all operators are either a + or a -. These are the only two valid ones at the moment.
